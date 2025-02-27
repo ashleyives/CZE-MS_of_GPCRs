@@ -1,12 +1,6 @@
 # Load necessary libraries
-library(isoforma)
-library(pspecterlib)
 library(dplyr)
-library(Rdisop)
 library(tidyverse)
-library(ggplot2)
-library(ggpubr)
-library(isopat)
 library(Peptides)
 library(foreach)
 library(doParallel)
@@ -85,7 +79,7 @@ print(theoretical_ions_df)
 #2 - import TDValidator export .csv and filter for true positive internal fragment ions 
 ########################################################################################################################################################
 
-data0 <- read.csv("C:/Users/ives435/OneDrive - PNNL/Desktop/GPCR paper/INTERNALTEST_20220729_ani0287_cap52_newb2ar_pngasef30min37C_01_SID50_CID15_CS27_1850mz_MS2_1036to1353-qb.csv") %>%
+data0 <- read.csv("C:/Users/ives435/OneDrive - PNNL/Desktop/GPCR paper/20220729_ani0287_cap52_newb2ar_pngasef30min37C_01_SID50_CID15_CS27_1850mz_MS2_1036to1353-qb.csv") %>%
    mutate(Mono.m.z = Mono..m.z,
           roundmz = round(Mono.m.z, 0)) %>%
    mutate(id = paste(roundmz, "_", Charge)) %>%
@@ -99,16 +93,19 @@ data <- data0 %>%
    mutate(adj.ppm.Error = ppm.Error-median(ppm.Error))%>%
    separate_rows(Name, sep = ", ") #if 'Name' lists two ions splits into two rows 
 
-#find duplicate instances of MZ_Charge    
+#find fragment ions that have same mz, can also do MZ_charge  
 #if there is a duplicate, preferentially pick "B" or "Y" over internals "I"
 #return only internal fragment ions with |adjusted ppm error| <2 ppm 
 filtered_data <- data %>%
-   group_by(id) %>%
+   group_by(roundmz) %>%
    filter(if(any(grepl("B|Y", Name))) grepl("B|Y", Name) else grepl("I", Name)) %>%
    slice_max(order_by = Score, n = 1) %>% #if ions share the name mz_charge, return which ever row has the best isotopic fit score
    filter(ifelse(grepl("B|Y", Name), adj.ppm.Error >= -10 & adj.ppm.Error <= 10, adj.ppm.Error >= -2 & adj.ppm.Error <= 2)) %>%
+   filter(!(grepl("I", Name) & Mono..m.z >= 1800)) %>% #above 1800 noise is very high
    left_join(theoretical_ions_df, by = "Name") %>%
    mutate(modification_delta = Theoretical.Mass-monoiso)
+
+write.csv(filtered_data, file="C:/Users/ives435/OneDrive - PNNL/Desktop/GPCR paper/filtered_frags.csv")
 
 #sanity if there are ions with duplicate m/z and charge, can happen if two internal fragment ions have same isotopic fit score
 duplicated_ids <- filtered_data %>%
