@@ -79,7 +79,7 @@ print(theoretical_ions_df)
 #2 - import TDValidator export .csv and filter for true positive internal fragment ions 
 ########################################################################################################################################################
 
-data0 <- read.csv("C:/Users/ives435/OneDrive - PNNL/Desktop/GPCR paper/20220729_ani0287_cap52_newb2ar_pngasef30min37C_01_SID50_CID15_CS27_1850mz_MS2_1036to1353-qb.csv") %>%
+data0 <- read.csv("C:/Users/ives435/OneDrive - PNNL/Desktop/GPCR paper/20220729_ani0287_cap52_newb2ar_pngasef30min37C_01_SID50_CID15_CS27_1850mz_MS2_1036to1353-qb_v2.csv") %>%
    mutate(Mono.m.z = Mono..m.z,
           roundmz = round(Mono.m.z, 0)) %>%
    mutate(id = paste(roundmz, "_", Charge)) %>%
@@ -98,10 +98,10 @@ data <- data0 %>%
 #return only internal fragment ions with |adjusted ppm error| <2 ppm 
 filtered_data <- data %>%
    group_by(roundmz) %>%
-   filter(if(any(grepl("B|Y", Name))) grepl("B|Y", Name) else grepl("I", Name)) %>%
-   slice_max(order_by = Score, n = 1) %>% #if ions share the name mz_charge, return which ever row has the best isotopic fit score
-   filter(ifelse(grepl("B|Y", Name), adj.ppm.Error >= -10 & adj.ppm.Error <= 10, adj.ppm.Error >= -2 & adj.ppm.Error <= 2)) %>%
-   filter(!(grepl("I", Name) & Mono..m.z >= 1800)) %>% #above 1800 noise is very high
+   filter(if(any(grepl("B|Y", Name))) grepl("B|Y", Name) else grepl("I", Name)) %>% 
+   slice_max(order_by = Score, n = 1) %>% #if ions share the name mz, return which ever row has the best isotopic fit score
+   filter(ifelse(grepl("B|Y", Name), adj.ppm.Error >= -10 & adj.ppm.Error <= 10, adj.ppm.Error >= -5 & adj.ppm.Error <= 5)) %>%
+   filter(Mono..m.z < 1800) %>% #above 1800 noise is very high
    left_join(theoretical_ions_df, by = "Name") %>%
    mutate(modification_delta = Theoretical.Mass-monoiso)
 
