@@ -79,11 +79,10 @@ print(theoretical_ions_df)
 #2 - import TDValidator export .csv and filter for true positive internal fragment ions 
 ########################################################################################################################################################
 
-data0 <- read.csv("C:/Users/ives435/OneDrive - PNNL/Desktop/GPCR paper/20220729_ani0287_cap52_newb2ar_pngasef30min37C_01_SID50_CID15_CS27_1850mz_MS2_1036to1353-qb_v2.csv") %>%
+data0 <- read.csv("C:/Users/ives435/OneDrive - PNNL/Desktop/GPCR paper/20220915_cap53_b2arpngasef20220818_HCD20_monophos_scan942to1348-qb.csv") %>%
    mutate(Mono.m.z = Mono..m.z,
           roundmz = round(Mono.m.z, 0)) %>%
    mutate(id = paste(roundmz, "_", Charge)) %>%
-   mutate(id2 = paste(Name, "_", roundmz, "_", Charge)) %>%
    dplyr::select(-Active)
 
 #all data is shifted by 2-3 ppm, will re-calibrate ppms below  
@@ -105,7 +104,10 @@ filtered_data <- data %>%
    left_join(theoretical_ions_df, by = "Name") %>%
    mutate(modification_delta = Theoretical.Mass-monoiso)
 
-write.csv(filtered_data, file="C:/Users/ives435/OneDrive - PNNL/Desktop/GPCR paper/filtered_frags.csv")
+export <- filtered_data %>%
+   dplyr::select(-Mono..m.z, -roundmz, -id, -firstAA, -lastAA, -sequence, -monoiso, -prolength, -Type)
+
+write.csv(export, file="C:/Users/ives435/OneDrive - PNNL/Desktop/GPCR paper/filtered_frags_HCD20_monophos.csv")
 
 #sanity if there are ions with duplicate m/z and charge, can happen if two internal fragment ions have same isotopic fit score
 duplicated_ids <- filtered_data %>%
