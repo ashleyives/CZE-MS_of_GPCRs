@@ -109,12 +109,11 @@ facet_labels <- c(`20220216_ani0287_b2ar_3hrPNGaseFRT_noZEBA_30kV_100secInj_MS1_
 # Create a named vector for legend labels with empty strings to hide them
 legend_labels <- c("groupA" = "")
 
-# Plot
 plot <- ggplot(combined_data, aes(x = times, y = y_smooth_scaled, color = group)) +
    geom_line(size = 1) +
    labs(y = "Rel. Abundance", x = "Migration time (min)", color = "Intact, Unmodified \u03B22AR \n Charge states 27-31+") + # Change legend title here
    theme_classic(base_size = 18) +
-   xlim(0, 40) +
+   scale_x_continuous(breaks = seq(0, 40, by = 2.5), labels = c(0, "", 5, "", 10, "", 15, "", 20, "", 25, "", 30, "", 35, "", 40)) +
    facet_wrap(~file, ncol = 1, labeller = as_labeller(facet_labels)) +
    scale_color_manual(values = c("groupA" = "red"), labels = legend_labels) + # Customize legend labels and colors
    theme(
@@ -124,7 +123,7 @@ plot <- ggplot(combined_data, aes(x = times, y = y_smooth_scaled, color = group)
    )
 plot
 
-ggsave(plot, filename = "C:/Users/ives435/OneDrive - PNNL/Desktop/GPCR paper/plot.png",
+ggsave(plot, filename = "C:/Users/ives435/OneDrive - PNNL/Desktop/GPCR paper/xie_BGE.png",
        scale = 2, width = 7, height = 7, units = "in", dpi = 600)
 
 
