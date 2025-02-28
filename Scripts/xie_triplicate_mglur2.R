@@ -5,14 +5,16 @@ library(rawrr)
 
 # File paths
 file_paths <- c(
-   "C:/Users/ives435/OneDrive - PNNL/Desktop/GPCR paper/massive/20220729_ani0287_cap52_newb2ar_pngasef30min37C_01_SID100.raw",
-   "C:/Users/ives435/OneDrive - PNNL/Desktop/GPCR paper/massive/to_add/20220216_ani0287_b2ar_3hrPNGaseFRT_noZEBA_30kV_100secInj_MS1_04_3pAAnosulfolane.raw",
-   "C:/Users/ives435/OneDrive - PNNL/Desktop/GPCR paper/massive/20220729_ani0287_cap52_newb2ar_pngasef30min37C_01_SID50_CID20_CS27_1850mz.raw"
+   "C:/Users/ives435/OneDrive - PNNL/Desktop/GPCR paper/massive/20210515_kjb9186_CEMS_mGluR2_30kV_1psi_6.7nL_01.raw",
+   "C:/Users/ives435/OneDrive - PNNL/Desktop/GPCR paper/massive/to_add/20210515_kjb9186_CEMS_mGluR2_30kV_1psi_6.7nL_02.raw",
+   "C:/Users/ives435/OneDrive - PNNL/Desktop/GPCR paper/massive/to_add/20210515_kjb9186_CEMS_mGluR2_30kV_1psi_6.7nL_03.raw"
 )
 
 # Define mass groups as a list
 mass_groups <- list(
-   groupA = c(1610.7215, 1664.3689, 1721.7425, 1783.1707, 1849.1853)    # unmodified, intact receptor going from 31+ to 27+
+   groupA = c(1055.27),    # unmodified, 4+
+   groupB = c(1075.25),    # monophos, 4+
+   groupC = c(1095.24)    # diphos, 4+
 )
 
 ppmtol <- 10
@@ -76,7 +78,7 @@ ggplot(combined_data, aes(x = times, y = y_avg, color = group)) +
    facet_wrap(~file)
 
 # Gaussian smoothing for all groups
-sigma <- 3  # Standard deviation of the Gaussian
+sigma <- 1  # Standard deviation of the Gaussian
 window_size <- round(6 * sigma)  # Define the window size, typically 6 * sigma
 gaussian_weights <- dnorm(seq(-3, 3, length.out = window_size), mean = 0, sd = sigma)
 
@@ -102,21 +104,25 @@ combined_data$file <- as.factor(combined_data$file)
 levels(combined_data$file)
 
 # Create a named vector for your labels
-facet_labels <- c(`20220216_ani0287_b2ar_3hrPNGaseFRT_noZEBA_30kV_100secInj_MS1_04_3pAAnosulfolane.raw` = "A - 3% Acetic Acid, SID = 100", 
-                  `20220729_ani0287_cap52_newb2ar_pngasef30min37C_01_SID100.raw` = "B - 3% Acetic Acid+10%sulfolane, SID = 100", 
-                  `20220729_ani0287_cap52_newb2ar_pngasef30min37C_01_SID50_CID20_CS27_1850mz.raw` = "C - 3% Acetic Acid+10%sulfolane, SID = 50") 
+facet_labels <- c(`20210515_kjb9186_CEMS_mGluR2_30kV_1psi_6.7nL_01.raw` = "A - Technical Replicate 1", 
+                  `20210515_kjb9186_CEMS_mGluR2_30kV_1psi_6.7nL_02.raw` = "B - Technical Replicate 2", 
+                  `20210515_kjb9186_CEMS_mGluR2_30kV_1psi_6.7nL_03.raw` = "C - Technical Replicate 3") 
 
 # Create a named vector for legend labels with empty strings to hide them
-legend_labels <- c("groupA" = "")
+legend_labels <- c("groupA" = "Unmodified",
+                   "groupB" = "Monophosphorylated",
+                   "groupC" = "Diphosphorylated")
 
 # Plot
 plot <- ggplot(combined_data, aes(x = times, y = y_smooth_scaled, color = group)) +
    geom_line(size = 1) +
-   labs(y = "Rel. Abundance", x = "Migration time (min)", color = "Intact, Unmodified \u03B22AR \n Charge states 27-31+") + # Change legend title here
+   labs(y = "Rel. Abundance", x = "Migration time (min)", color = "mGluR2 Proteoform, 4+") + # Change legend title here
    theme_classic(base_size = 18) +
-   xlim(0, 40) +
+   xlim(20, 40)+
+   coord_cartesian(xlim = c(20, 40))+
+   scale_x_continuous(breaks = seq(20, 40, by = 2.5), labels = c(20, "", 25, "", 30, "", 35, "", 40)) +
    facet_wrap(~file, ncol = 1, labeller = as_labeller(facet_labels)) +
-   scale_color_manual(values = c("groupA" = "red"), labels = legend_labels) + # Customize legend labels and colors
+   scale_color_manual(values = c("groupA" = "darkblue", "groupB" = "red", "groupC" = "darkgreen"), labels = legend_labels) + # Customize legend labels and colors
    theme(
       text = element_text(family = "Arial"), # Set font to Arial
       strip.text = element_text(face = "bold", family = "Arial"), # Make facet label text bold
@@ -124,7 +130,7 @@ plot <- ggplot(combined_data, aes(x = times, y = y_smooth_scaled, color = group)
    )
 plot
 
-ggsave(plot, filename = "C:/Users/ives435/OneDrive - PNNL/Desktop/GPCR paper/plot.png",
+ggsave(plot, filename = "C:/Users/ives435/OneDrive - PNNL/Desktop/GPCR paper/xie_grm2_trip.png",
        scale = 2, width = 7, height = 7, units = "in", dpi = 600)
 
 
