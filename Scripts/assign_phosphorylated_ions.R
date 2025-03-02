@@ -137,7 +137,9 @@ ratios %>%
    scale_color_manual(values = c("C" = "black", "Z" = "blue")) # Replace 'Type1' and 'Type2' if your Type variable has specific values
 
 export <- data %>%
-   dplyr::select(-Mono..m.z, -id, -firstAA, -lastAA, -sequence, -monoiso, -modification_delta, -prolength, -Type, -Active)
+   dplyr::select(-id, -firstAA, -lastAA, -sequence, -monoiso, -modification_delta, -prolength, -Type, -Active, -Intensity) %>%
+   mutate(modification = if_else(modification == "Monophosphorylated", "Yes", 
+                                 if_else(modification == "Unmodified", "No", modification)))
 
 write.csv(export, file="C:/Users/ives435/OneDrive - PNNL/Desktop/GPCR paper/ethcd_factorxa_monophos.csv")
 
