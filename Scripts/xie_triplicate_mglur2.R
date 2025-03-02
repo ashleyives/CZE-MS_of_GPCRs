@@ -2,6 +2,7 @@ library(ggplot2)
 library(zoo)
 library(dplyr)
 library(rawrr)
+library(pracma)
 
 # File paths
 file_paths <- c(
@@ -117,7 +118,7 @@ legend_labels <- c("groupA" = "Unmodified",
 plot <- ggplot(combined_data, aes(x = times, y = y_smooth_scaled, color = group)) +
    geom_line(size = 1) +
    labs(y = "Rel. Abundance", x = "Migration time (min)", color = "mGluR2 Proteoform, 4+") + # Change legend title here
-   theme_classic(base_size = 18) +
+   theme_classic(base_size = 24) +
    xlim(20, 40)+
    coord_cartesian(xlim = c(20, 40))+
    scale_x_continuous(breaks = seq(20, 40, by = 2.5), labels = c(20, "", 25, "", 30, "", 35, "", 40)) +
@@ -125,16 +126,41 @@ plot <- ggplot(combined_data, aes(x = times, y = y_smooth_scaled, color = group)
    scale_color_manual(values = c("groupA" = "darkblue", "groupB" = "red", "groupC" = "darkgreen"), labels = legend_labels) + # Customize legend labels and colors
    theme(
       text = element_text(family = "Arial"), # Set font to Arial
-      strip.text = element_text(face = "bold", family = "Arial"), # Make facet label text bold
-      strip.text.y.left = element_text(angle = 0, hjust = 0, face = "bold", family = "Arial") # Adjust facet label position, alignment, and boldness
+      strip.text = element_text(face = "bold", family = "Arial", size = rel(1.2)), # Make facet label text bold and bigger
+      strip.text.y.left = element_text(angle = 0, hjust = 0, face = "bold", family = "Arial"), # Adjust facet label position, alignment, and boldness
+      legend.position = "top" # Move the legend to the top of the plot
    )
 plot
 
 ggsave(plot, filename = "C:/Users/ives435/OneDrive - PNNL/Desktop/GPCR paper/xie_grm2_trip.png",
        scale = 2, width = 7, height = 7, units = "in", dpi = 600)
 
+#use plotly to find maxima and calculate migration time/RSD 
+library(plotly)
 
+# Convert the ggplot to a plotly plot
+plotly_plot <- ggplotly(plot)
 
+# Print the plotly plot
+plotly_plot
+ 
+# Values
+values <- c(23.69, 23.52, 23.67) #unmodified 
+# values <- c(28.59, 28.25, 28.58) #monophos 1 
+# values <- c(29.00, 28.71, 28.99) #monophos 2
+# values <- c(36.8, 36.4, 37.05) #diphos 1 
+# values <- c(37.48, 36.95, 37.70) #diphos 2
 
+# Mean
+mean_value <- mean(values)
+
+# Standard Deviation
+sd_value <- sd(values)
+
+# RSD %
+rsd_percentage <- (sd_value / mean_value) * 100
+
+# Print RSD %
+rsd_percentage
 
 

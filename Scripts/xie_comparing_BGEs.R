@@ -112,14 +112,15 @@ legend_labels <- c("groupA" = "")
 plot <- ggplot(combined_data, aes(x = times, y = y_smooth_scaled, color = group)) +
    geom_line(size = 1) +
    labs(y = "Rel. Abundance", x = "Migration time (min)", color = "Intact, Unmodified \u03B22AR \n Charge states 27-31+") + # Change legend title here
-   theme_classic(base_size = 18) +
+   theme_classic(base_size = 24) +
    scale_x_continuous(breaks = seq(0, 40, by = 2.5), labels = c(0, "", 5, "", 10, "", 15, "", 20, "", 25, "", 30, "", 35, "", 40)) +
    facet_wrap(~file, ncol = 1, labeller = as_labeller(facet_labels)) +
    scale_color_manual(values = c("groupA" = "red"), labels = legend_labels) + # Customize legend labels and colors
    theme(
       text = element_text(family = "Arial"), # Set font to Arial
-      strip.text = element_text(face = "bold", family = "Arial"), # Make facet label text bold
-      strip.text.y.left = element_text(angle = 0, hjust = 0, face = "bold", family = "Arial") # Adjust facet label position, alignment, and boldness
+      strip.text = element_text(face = "bold", family = "Arial", size = rel(1.2)), # Make facet label text bold and bigger
+      strip.text.y.left = element_text(angle = 0, hjust = 0, face = "bold", family = "Arial"), # Adjust facet label position, alignment, and boldness
+      legend.position = "top" # Move the legend to the top of the plot
    )
 plot
 

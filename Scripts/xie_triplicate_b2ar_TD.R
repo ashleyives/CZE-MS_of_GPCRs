@@ -117,7 +117,7 @@ legend_labels <- c("groupA" = "Unmodified",
 plot <- ggplot(combined_data, aes(x = times, y = y_smooth_scaled, color = group)) +
    geom_line(size = 1) +
    labs(y = "Rel. Abundance", x = "Migration time (min)", color = "Intact, \u03B22AR Proteoform \n Charge states 26-30+") + # Change legend title here
-   theme_classic(base_size = 18) +
+   theme_classic(base_size = 24) +
    xlim(15, 30)+
    coord_cartesian(xlim = c(15, 30))+
    scale_x_continuous(breaks = seq(15, 30, by = 2.5), labels = c(15, "", 20, "", 25, "", 30)) +
@@ -125,8 +125,9 @@ plot <- ggplot(combined_data, aes(x = times, y = y_smooth_scaled, color = group)
    scale_color_manual(values = c("groupA" = "darkblue", "groupB" = "red", "groupC" = "darkgreen"), labels = legend_labels) + # Customize legend labels and colors
    theme(
       text = element_text(family = "Arial"), # Set font to Arial
-      strip.text = element_text(face = "bold", family = "Arial"), # Make facet label text bold
-      strip.text.y.left = element_text(angle = 0, hjust = 0, face = "bold", family = "Arial") # Adjust facet label position, alignment, and boldness
+      strip.text = element_text(face = "bold", family = "Arial", size = rel(1.2)), # Make facet label text bold and bigger
+      strip.text.y.left = element_text(angle = 0, hjust = 0, face = "bold", family = "Arial"), # Adjust facet label position, alignment, and boldness
+      legend.position = "top" # Move the legend to the top of the plot
    )
 plot
 
