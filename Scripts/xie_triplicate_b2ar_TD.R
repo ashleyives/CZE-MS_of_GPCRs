@@ -135,6 +135,13 @@ ggsave(plot, filename = "C:/Users/ives435/OneDrive - PNNL/Desktop/GPCR paper/xie
        scale = 2, width = 7, height = 7, units = "in", dpi = 600)
 
 
+library(plotly)
+
+# Convert ggplot to plotly
+interactive_plot <- ggplotly(plot)
+
+# Display the plot
+interactive_plot
 
 
 
