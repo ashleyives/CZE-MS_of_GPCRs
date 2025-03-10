@@ -138,6 +138,7 @@ ggsave(plot, filename = "C:/Users/ives435/OneDrive - PNNL/Desktop/GPCR paper/xie
 ggsave(plot, filename = "C:/Users/ives435/OneDrive - PNNL/Desktop/GPCR paper/xie_grm2_trip.svg",
        scale = 2, width = 7, height = 7, units = "in", dpi = 600)
 
+
 #use plotly to find maxima and calculate migration time/RSD 
 library(plotly)
 
