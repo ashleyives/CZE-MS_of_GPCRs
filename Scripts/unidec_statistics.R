@@ -7,7 +7,7 @@ library(ggpubr)
 
 data <- read.csv("C:/Users/ives435/OneDrive - PNNL/Desktop/GPCR paper/unidec_stats.csv")
 
-palette <- c("#999999", "#000000", "#56B4E9")
+palette <- c("darkgreen", "darkred", "darkblue")
 
 #unmod 
 unmod <- data %>%

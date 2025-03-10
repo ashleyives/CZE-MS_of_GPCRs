@@ -135,6 +135,9 @@ plot
 ggsave(plot, filename = "C:/Users/ives435/OneDrive - PNNL/Desktop/GPCR paper/xie_grm2_trip.png",
        scale = 2, width = 7, height = 7, units = "in", dpi = 600)
 
+ggsave(plot, filename = "C:/Users/ives435/OneDrive - PNNL/Desktop/GPCR paper/xie_grm2_trip.svg",
+       scale = 2, width = 7, height = 7, units = "in", dpi = 600)
+
 #use plotly to find maxima and calculate migration time/RSD 
 library(plotly)
 
@@ -144,23 +147,35 @@ plotly_plot <- ggplotly(plot)
 # Print the plotly plot
 plotly_plot
  
-# Values
-values <- c(23.69, 23.52, 23.67) #unmodified 
-# values <- c(28.59, 28.25, 28.58) #monophos 1 
-# values <- c(29.00, 28.71, 28.99) #monophos 2
-# values <- c(36.8, 36.4, 37.05) #diphos 1 
-# values <- c(37.48, 36.95, 37.70) #diphos 2
+# Define the values for each group
+values_unmodified <- c(23.69, 23.52, 23.67)
+values_monophos1 <- c(28.59, 28.25, 28.58)
+values_monophos2 <- c(29.00, 28.71, 28.99)
+values_diphos1 <- c(36.8, 36.4, 37.05)
+values_diphos2 <- c(37.48, 36.95, 37.70)
 
-# Mean
-mean_value <- mean(values)
+# Combine the values into a data frame
+df <- data.frame(
+   group = rep(1:5, each = 3),
+   rep = rep(1:3, times = 5),
+   value = c(values_unmodified, values_monophos1, values_monophos2, values_diphos1, values_diphos2)
+)
 
-# Standard Deviation
-sd_value <- sd(values)
+# Print the data frame
+print(df)
 
-# RSD %
-rsd_percentage <- (sd_value / mean_value) * 100
+# Calculate mean, sd, and rsd
+summary_df <- df %>%
+   group_by(group) %>%
+   summarise(
+      mean = round(mean(value), 2),
+      sd = sd(value),
+      rsd = sd / mean * 100
+   )
 
-# Print RSD %
-rsd_percentage
+# Print the summary data frame
+print(summary_df)
+
+
 
 
