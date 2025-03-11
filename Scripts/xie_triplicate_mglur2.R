@@ -117,7 +117,7 @@ legend_labels <- c("groupA" = "Unmodified",
 # Plot
 plot <- ggplot(combined_data, aes(x = times, y = y_smooth_scaled, color = group)) +
    geom_line(size = 1) +
-   labs(y = "Rel. Abundance", x = "Migration time (min)", color = "mGluR2 Proteoform, 4+") + # Change legend title here
+   labs(y = "Rel. Abundance", x = "Migration time (min)", color = "mGluR2 Proteoform") + # Change legend title here
    theme_classic(base_size = 24) +
    xlim(20, 40)+
    coord_cartesian(xlim = c(20, 40))+
@@ -128,7 +128,8 @@ plot <- ggplot(combined_data, aes(x = times, y = y_smooth_scaled, color = group)
       text = element_text(family = "Arial"), # Set font to Arial
       strip.text = element_text(face = "bold", family = "Arial", size = rel(1.2)), # Make facet label text bold and bigger
       strip.text.y.left = element_text(angle = 0, hjust = 0, face = "bold", family = "Arial"), # Adjust facet label position, alignment, and boldness
-      legend.position = "top" # Move the legend to the top of the plot
+      legend.position = "top", # Move the legend to the top of the plot
+      legend.text = element_text(size = rel(1.1)) # Make legend text bigger
    )
 plot
 
