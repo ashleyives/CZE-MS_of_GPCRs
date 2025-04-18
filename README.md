@@ -1,5 +1,8 @@
 # CZE-MS_of_GPCRs
-This repository is for hosting the scripts and files to reproduce the analyses described in the listed manuscript (10.26434/chemrxiv-2025-t2dr4). 
+This repository is for hosting the scripts and files to reproduce the analyses described in the listed manuscript (10.1021/acs.analchem.4c06994). 
+
+# Title
+Capillary Zone Electrophoresis-Mass Spectrometry of Intact G Protein-Coupled Receptors Enables Proteoform Profiling
 
 # Authors
 Ashley N. Ives<sup>1,2,‡</sup>, Kevin Jooß<sup>3-5,‡</sup>, Rafael D. Melani<sup>5,6</sup>, Ryan T. Fellers<sup>6</sup>, John Janetzko<sup>7*</sup>, Neil L. Kelleher<sup>1,5,6*</sup>
