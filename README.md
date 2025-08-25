@@ -1,6 +1,9 @@
 # CZE-MS_of_GPCRs
 This repository is for hosting the scripts and files to reproduce the analyses described in the listed manuscript (10.1021/acs.analchem.4c06994). 
 
+# Experimental overview:
+![alt text](https://github.com/ashleyives/CZE-MS_of_GPCRs/blob/main/TOC.png)
+
 # Title
 Capillary Zone Electrophoresis-Mass Spectrometry of Intact G Protein-Coupled Receptors Enables Proteoform Profiling
 
